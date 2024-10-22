@@ -20,7 +20,7 @@ public class TestBiblioteca {
     @Before
     public void setUp() {
         biblioteca = new Biblioteca();
-        livro = new Livro("123", "models.Livro de Teste", "Autor Teste", 2023);
+        livro = new Livro("123", "Livro de Teste", "Autor Teste", 2023);
         usuario = new Usuario("u1", "Usuário Teste");
     }
 
@@ -40,7 +40,7 @@ public class TestBiblioteca {
     @Test
     public void testeBuscarLivrosPorNome() throws IOException {
         biblioteca.cadastrarLivro(livro);
-        List<Livro> encontrados = biblioteca.buscarLivrosPorNome("models.Livro de Teste");
+        List<Livro> encontrados = biblioteca.buscarLivrosPorNome("Livro de Teste");
         assertEquals(1, encontrados.size());
         assertEquals(livro, encontrados.get(0));
     }
@@ -93,18 +93,18 @@ public class TestBiblioteca {
 
     @Test(expected = LivroNaoEncontradoException.class)
     public void testeRemoverLivroInexistente() throws Exception {
-        biblioteca.removerLivro("456"); // Deve lançar uma exceção
+        biblioteca.removerLivro("456");
     }
 
     @Test(expected = LivroNaoEncontradoException.class)
     public void testeEmprestarLivroInexistente() throws Exception {
-        biblioteca.emprestarLivro("456", "u1"); // Deve lançar uma exceção
+        biblioteca.emprestarLivro("456", "u1");
     }
 
     @Test(expected = UsuarioNaoEncontradoException.class)
     public void testeEmprestarLivroParaUsuarioInexistente() throws Exception {
         biblioteca.cadastrarLivro(livro);
-        biblioteca.emprestarLivro("123", "u2"); // Deve lançar uma exceção
+        biblioteca.emprestarLivro("123", "u2");
     }
 
     @Test(expected = LivroEmprestadoException.class)
@@ -112,6 +112,6 @@ public class TestBiblioteca {
         biblioteca.cadastrarLivro(livro);
         biblioteca.cadastrarUsuario(usuario);
         biblioteca.emprestarLivro("123", "u1");
-        biblioteca.emprestarLivro("123", "u1"); // Deve lançar uma exceção
+        biblioteca.emprestarLivro("123", "u1");
     }
 }

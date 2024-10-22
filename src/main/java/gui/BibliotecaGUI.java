@@ -3,7 +3,6 @@ package gui;
 import controllers.BibliotecaController;
 import models.Livro;
 import models.Usuario;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -18,19 +17,16 @@ public class BibliotecaGUI {
 
     private void initialize() {
         JFrame frame = new JFrame("Sistema de Biblioteca");
-        frame.setSize(800, 600); // Tamanho da janela
+        frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        // Painel principal com abas
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Painéis separados para cada funcionalidade
         JPanel livroPanel = createLivroPanel();
         JPanel usuarioPanel = createUsuarioPanel();
         JPanel emprestimoPanel = createEmprestimoPanel();
 
-        // Adicionando os painéis como abas
         tabbedPane.add("Livros", livroPanel);
         tabbedPane.add("Usuários", usuarioPanel);
         tabbedPane.add("Empréstimos", emprestimoPanel);
@@ -106,9 +102,62 @@ public class BibliotecaGUI {
             }
         });
 
+        JButton pesquisarLivroButton = new JButton("Pesquisar Livro");
+        pesquisarLivroButton.addActionListener(e -> {
+            String isbn = JOptionPane.showInputDialog(livroPanel, "Informe o ISBN do Livro:");
+            try {
+                Livro livro = controller.pesquisarLivro(isbn);
+                JOptionPane.showMessageDialog(livroPanel, "Livro encontrado: " + livro);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(livroPanel, ex.getMessage());
+            }
+        });
+
+        JButton buscarLivrosPorNomeButton = new JButton("Buscar Livros por Nome");
+        buscarLivrosPorNomeButton.addActionListener(e -> {
+            String nome = JOptionPane.showInputDialog(livroPanel, "Informe o nome do livro:");
+            List<Livro> livros = controller.buscarLivrosPorNome(nome);
+            StringBuilder sb = new StringBuilder("Livros encontrados:\n");
+            for (Livro livro : livros) {
+                sb.append(livro).append("\n");
+            }
+            JOptionPane.showMessageDialog(livroPanel, sb.toString());
+        });
+
+        JButton buscarLivrosPorAutorButton = new JButton("Buscar Livros por Autor");
+        buscarLivrosPorAutorButton.addActionListener(e -> {
+            String autor = JOptionPane.showInputDialog(livroPanel, "Informe o autor:");
+            List<Livro> livros = controller.buscarLivrosPorAutor(autor);
+            StringBuilder sb = new StringBuilder("Livros encontrados:\n");
+            for (Livro livro : livros) {
+                sb.append(livro).append("\n");
+            }
+            JOptionPane.showMessageDialog(livroPanel, sb.toString());
+        });
+
+        JButton buscarLivrosPorAnoButton = new JButton("Buscar Livros por Ano");
+        buscarLivrosPorAnoButton.addActionListener(e -> {
+            String anoStr = JOptionPane.showInputDialog(livroPanel, "Informe o ano:");
+            try {
+                int ano = Integer.parseInt(anoStr);
+                List<Livro> livros = controller.buscarLivrosPorAno(ano);
+                StringBuilder sb = new StringBuilder("Livros encontrados:\n");
+                for (Livro livro : livros) {
+                    sb.append(livro).append("\n");
+                }
+                JOptionPane.showMessageDialog(livroPanel, sb.toString());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(livroPanel, "Ano deve ser um número inteiro.");
+            }
+        });
+
         livroPanel.add(cadastrarLivroButton);
         livroPanel.add(listarLivrosButton);
         livroPanel.add(removerLivroButton);
+        livroPanel.add(pesquisarLivroButton);
+        livroPanel.add(buscarLivrosPorNomeButton);
+        livroPanel.add(buscarLivrosPorAutorButton);
+        livroPanel.add(buscarLivrosPorAnoButton);
 
         return livroPanel;
     }

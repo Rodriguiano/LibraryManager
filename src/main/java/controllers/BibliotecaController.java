@@ -4,8 +4,6 @@ import models.Biblioteca;
 import models.Livro;
 import models.Usuario;
 import persistence.Persistencia;
-
-
 import java.io.IOException;
 import java.util.List;
 
